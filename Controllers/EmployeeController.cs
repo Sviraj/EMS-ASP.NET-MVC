@@ -72,7 +72,7 @@ namespace WebApplication1.Controllers
         }
 
         // POST: Employee/Delete
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteConfirmed")]
         public ActionResult DeleteConfirmed(int id)
         {
             _employeeService.DeleteEmployee(id);
