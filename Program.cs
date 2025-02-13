@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WebApplication1.Helpers;
 using WebApplication1.Interfaces;
 using WebApplication1.Models;
 using WebApplication1.Repositories;
@@ -12,6 +13,10 @@ builder.Services.AddDbContext<EmsAspmvcContext>(options =>
     // E.g. if using SQL Server:
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+// For ASP.NET Core in Program.cs:
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IMemoryCacheHelper, MemoryCacheHelper>();
 
 
 // Add services to the container.

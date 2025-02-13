@@ -1,4 +1,5 @@
-﻿using WebApplication1.Interfaces;
+﻿using WebApplication1.Helpers;
+using WebApplication1.Interfaces;
 using WebApplication1.Models;
 
 namespace WebApplication1.Services
@@ -6,15 +7,19 @@ namespace WebApplication1.Services
     public class EmployeeService : IEmployeeService
     {
         private readonly IRepository<Employee> _employeeRepository;
-
-        public EmployeeService(IRepository<Employee> employeeRepository)
+        private readonly IMemoryCacheHelper _memoryCacheHelper;
+        public EmployeeService(IRepository<Employee> employeeRepository, IMemoryCacheHelper memoryCacheHelper)
         {
             _employeeRepository = employeeRepository;
+            _memoryCacheHelper = memoryCacheHelper;
         }
 
         public IEnumerable<Employee> GetAllEmployees()
         {
-            return _employeeRepository.GetAll();
+            // "EmployeeList" is the cache key.
+            // The lambda function fetches the employee list from the repository if the cache does not already contain it.
+            return _memoryCacheHelper.Cached("EmployeeList", () => _employeeRepository.GetAll().ToList());
+
         }
 
         public Employee GetEmployeeById(int id)
